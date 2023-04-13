@@ -1,6 +1,5 @@
 const http = require('http');
 const fs = require('fs');
-var result;
 const server = http.createServer((req, res) => {
     if (req.url === '/home') {
         res.write('<html>');
@@ -30,8 +29,10 @@ const server = http.createServer((req, res) => {
         return res.end();
     }
     else if (req.url === '/') {
-        res.write(`<html><body><h3>${result}</h3><form action="/message" method="POST"><input type="text" name="message"><button type="submit">Submit</button></form></body></html>`);
-        return res.end();
+        fs.readFile('message.txt',(err,data)=>{
+            res.write(`<html><body><h3>${data}</h3><form action="/message" method="POST"><input type="text" name="message"><button type="submit">Submit</button></form></body></html>`);
+            return res.end();
+        })
     }
 
     else if (req.url === '/message' && req.method === 'POST') {
